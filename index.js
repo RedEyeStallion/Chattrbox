@@ -27,6 +27,7 @@ var server = http.createServer(function (req, res) {
             handleError(err, res);
             return;
         } else {
+            // set file mime type
             res.setHeader('Content-Type', mime.lookup(filePath));
             res.end(data);
         }
