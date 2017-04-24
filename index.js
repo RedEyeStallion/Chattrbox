@@ -6,6 +6,8 @@ var fs = require('fs');
 var extract = require('./extract');
 // import websockets-server.js
 var wss = require('./websockets-server');
+// import mime
+var mime = required('mime');
 
 // handler function for 404 page not found
 var handleError = function (err, res) {
@@ -25,6 +27,7 @@ var server = http.createServer(function (req, res) {
             handleError(err, res);
             return;
         } else {
+            res.setHeader('Content-Type', mime.lookup(filePath));
             res.end(data);
         }
     });
