@@ -6,25 +6,29 @@ var fs = require('fs');
 var extract = require('./extract');
 // import websockets-server.js
 var wss = require('./websockets-server');
+// import mime
+var mime = require('mime');
 
 // handler function for 404 page not found
-var handleError = function (err, res) {
+var handleError = function(err, res) {
     res.writeHead(404);
     res.end();
-}
+};
 
-var server = http.createServer(function (req, res) {
+var server = http.createServer(function(req, res) {
     console.log('Responding to a request.');
 
     // use extract to get filePath using extractFilePath function
     var filePath = extract(req.url);
     // open filePath, and send contents of file
-    fs.readFile(filePath, function (err, data) {
+    fs.readFile(filePath, function(err, data) {
         // if page not found, 404
         if (err) {
             handleError(err, res);
             return;
         } else {
+            // set file mime type
+            res.setHeader('Content-Type', mime.lookup(filePath));
             res.end(data);
         }
     });
